@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CheapCarHub · Safe & Simple Cheap Cars</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body{background:#0f1223;color:#e8ecf2}
+    .navbar,.offcanvas{background:#0b0e1a}
+    .card{background:#0c1124;border:1px solid #1a2140}
+    .badge-soft{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+    .shadow-soft{box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .rounded-2xl{border-radius:1rem}
+    .btn-primary{background:#5b8cff;border-color:#5b8cff}
+    .btn-outline-light{border-color:#3a446a;color:#c7d2f8}
+    .btn-outline-light:hover{background:#1a2140}
+    .hero{background:radial-gradient(1000px 600px at 80% -10%, #1b2554 0, rgba(27,37,84,0) 60%),
+           radial-gradient(800px 500px at -10% 0%, #123a5e 0, rgba(18,58,94,0) 60%)}
+    .form-hint{font-size:.85rem;color:#a8b3d6}
+    .price{font-weight:800}
+    .chip{display:inline-flex;gap:.4rem;align-items:center;padding:.25rem .5rem;background:#121939;border:1px solid #1f2a57;border-radius:.65rem;font-size:.8rem}
+    .filter-pill{cursor:pointer}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top border-bottom border-1 border-primary-subtle">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">CheapCarHub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navDrawer">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" id="navDrawer">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menu</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link active" href="#market">Marketplace</a></li>
+            <li class="nav-item"><a class="nav-link" href="#buyers">For Buyers</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sellers">For Sellers</a></li>
+            <li class="nav-item"><a class="nav-link" href="#how">How it Works</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#signUpBuyer"><i class="fa-solid fa-user-plus me-1"></i> Buyer Sign‑Up</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCarModal"><i class="fa-solid fa-car-burst me-1"></i> Sell a Honker</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero py-5 py-lg-6 border-bottom border-primary-subtle">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h1 class="display-5 fw-bold">Safe & Simple Cheap Cars</h1>
+          <p class="lead text-secondary">We help <span class="text-white">low‑budget buyers</span> get running again and <span class="text-white">low‑budget sellers</span> ditch their headaches — money is in the services, not the metal.</p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="#market" class="btn btn-primary btn-lg shadow-soft"><i class="fa-solid fa-magnifying-glass me-1"></i> Browse Deals</a>
+            <button class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#addCarModal"><i class="fa-solid fa-truck-tow me-1"></i> I Need This Gone</button>
+          </div>
+          <div class="mt-3 text-secondary small">Add‑ons: title & registration help, towing, short‑term warranty, micro‑financing, same‑day insurance.</div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card rounded-2xl shadow-soft">
+            <div class="card-body">
+              <h5 class="fw-bold mb-3">Quick Quote – Buyer Bundle</h5>
+              <form id="calcForm" class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">Car Price ($)</label>
+                  <input type="number" class="form-control" id="cPrice" value="1500" min="200" step="50">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Down ($)</label>
+                  <input type="number" class="form-control" id="cDown" value="400" min="0" step="50">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Term (months)</label>
+                  <input type="number" class="form-control" id="cTerm" value="12" min="3" step="1">
+                </div>
+                <div class="col-12">
+                  <div class="d-flex flex-wrap gap-2">
+                    <label class="chip"><input class="form-check-input me-1" type="checkbox" id="svcTitle" checked> Title & Reg ($199)</label>
+                    <label class="chip"><input class="form-check-input me-1" type="checkbox" id="svcTow"> Tow / Delivery ($149)</label>
+                    <label class="chip"><input class="form-check-input me-1" type="checkbox" id="svcWarranty"> 30‑Day Warranty ($199)</label>
+                    <label class="chip"><input class="form-check-input me-1" type="checkbox" id="svcInsurance"> Instant Insurance ($99)</label>
+                  </div>
+                  <div class="form-hint mt-1">Financing APR assumed 24% for illustration. Adjust in settings below.</div>
+                </div>
+                <div class="col-12">
+                  <div class="card bg-dark-subtle border-0">
+                    <div class="card-body d-flex flex-wrap gap-4 align-items-center">
+                      <div><div class="text-secondary small">Upfront</div><div class="h4 mb-0" id="outUpfront">$0</div></div>
+                      <div><div class="text-secondary small">Amount Financed</div><div class="h4 mb-0" id="outFinance">$0</div></div>
+                      <div><div class="text-secondary small">Est. Monthly</div><div class="h4 mb-0" id="outMonthly">$0</div></div>
+                      <div class="ms-auto"><button class="btn btn-primary" type="button" id="btnCalc">Recalculate</button></div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARKETPLACE -->
+  <section id="market" class="py-5">
+    <div class="container">
+      <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-3">
+        <div>
+          <h2 class="fw-bold mb-0">Marketplace</h2>
+          <div class="text-secondary">Certified Cheap listings with optional add‑on services</div>
+        </div>
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <span class="chip filter-pill" data-max="1500">≤ $1,500</span>
+          <span class="chip filter-pill" data-max="2500">≤ $2,500</span>
+          <span class="chip filter-pill" data-max="4000">≤ $4,000</span>
+          <div class="input-group" style="width:220px">
+            <span class="input-group-text"><i class="fa-solid fa-dollar-sign"></i></span>
+            <input id="filterMax" type="number" class="form-control" placeholder="Max budget" min="300" step="50">
+          </div>
+        </div>
+      </div>
+      <div id="cards" class="row g-3"></div>
+    </div>
+  </section>
+
+  <!-- BUYERS -->
+  <section id="buyers" class="py-5 border-top border-primary-subtle">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h3 class="fw-bold">For Buyers</h3>
+          <ul class="text-secondary">
+            <li>Pre‑purchase inspection & 20‑point checklist</li>
+            <li>Title & registration handled for you</li>
+            <li>Optional 30‑day drivetrain warranty</li>
+            <li>Micro‑financing & weekly payments available</li>
+            <li>Instant insurance hookup so you can drive today</li>
+          </ul>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="fw-bold">Get Early Access</h5>
+              <form id="buyerForm" class="row g-3">
+                <div class="col-md-6"><label class="form-label">Name</label><input class="form-control" id="bName" required></div>
+                <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="bEmail" required></div>
+                <div class="col-md-4"><label class="form-label">Budget ($)</label><input type="number" class="form-control" id="bBudget" value="2000" min="300"></div>
+                <div class="col-md-4"><label class="form-label">Need By</label><input type="date" class="form-control" id="bNeed"></div>
+                <div class="col-md-4"><label class="form-label">Financing?</label><select class="form-select" id="bFin"><option>Yes</option><option>No</option></select></div>
+                <div class="col-12 d-grid d-md-inline-flex gap-2"><button class="btn btn-primary" type="submit"><i class="fa-solid fa-bell me-1"></i> Join Waitlist</button></div>
+                <div class="form-hint">We’ll ping you when a match appears. No spam.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h3 class="fw-bold">Buyer FAQ</h3>
+          <div class="accordion" id="buyerFAQ">
+            <div class="accordion-item bg-transparent border-secondary-subtle">
+              <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#bf1">What if the car dies in a week?</button></h2>
+              <div id="bf1" class="accordion-collapse collapse"><div class="accordion-body">Add our 30‑day warranty for basic protection. We also disclose inspection results up front.</div></div>
+            </div>
+            <div class="accordion-item bg-transparent border-secondary-subtle">
+              <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#bf2">Can I pay weekly?</button></h2>
+              <div id="bf2" class="accordion-collapse collapse"><div class="accordion-body">Yes, micro‑financing is available for qualified buyers with flexible schedules.</div></div>
+            </div>
+            <div class="accordion-item bg-transparent border-secondary-subtle">
+              <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#bf3">Will you deliver it?</button></h2>
+              <div id="bf3" class="accordion-collapse collapse"><div class="accordion-body">Local tow/delivery starts at $149. We’ll schedule it for you.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELLERS -->
+  <section id="sellers" class="py-5 border-top border-primary-subtle">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h3 class="fw-bold">For Sellers</h3>
+          <ul class="text-secondary">
+            <li>Instant offers for non‑running or ugly ducklings</li>
+            <li>We handle pickup, title, and buyer matching</li>
+            <li>No tire‑kickers or meetups in parking lots</li>
+          </ul>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="fw-bold">Get an Offer</h5>
+              <form id="sellerForm" class="row g-3">
+                <div class="col-md-6"><label class="form-label">Name</label><input class="form-control" id="sName" required></div>
+                <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="sEmail" required></div>
+                <div class="col-md-4"><label class="form-label">Year</label><input type="number" class="form-control" id="sYear" min="1988" max="2025" required></div>
+                <div class="col-md-4"><label class="form-label">Make</label><input class="form-control" id="sMake" required></div>
+                <div class="col-md-4"><label class="form-label">Model</label><input class="form-control" id="sModel" required></div>
+                <div class="col-md-4"><label class="form-label">Asking ($)</label><input type="number" class="form-control" id="sAsk" min="0" step="50"></div>
+                <div class="col-md-8"><label class="form-label">Condition</label><select class="form-select" id="sCond"><option>Runs & Drives (rough)</option><option>Starts / Not Roadworthy</option><option>Non‑Runner</option><option>Parts / Scrap</option></select></div>
+                <div class="col-12"><label class="form-label">Pickup Needed?</label>
+                  <div class="form-check form-switch"><input class="form-check-input" id="sTow" type="checkbox"><label class="form-check-label" for="sTow">Yes, I need towing</label></div>
+                </div>
+                <div class="col-12 d-grid d-md-inline-flex gap-2"><button class="btn btn-primary" type="submit"><i class="fa-solid fa-paper-plane me-1"></i> Submit</button></div>
+                <div class="form-hint">We’ll email an offer or ask a few quick questions.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h3 class="fw-bold">What We Charge</h3>
+          <div class="row g-3">
+            <div class="col-sm-6"><div class="card h-100"><div class="card-body"><div class="fw-bold">Title & Registration</div><div class="display-6 price">$199</div><div class="text-secondary">DMV handled end‑to‑end</div></div></div></div>
+            <div class="col-sm-6"><div class="card h-100"><div class="card-body"><div class="fw-bold">Tow / Delivery</div><div class="display-6 price">$149</div><div class="text-secondary">Local 20mi base</div></div></div></div>
+            <div class="col-sm-6"><div class="card h-100"><div class="card-body"><div class="fw-bold">30‑Day Warranty</div><div class="display-6 price">$199</div><div class="text-secondary">Drivetrain only</div></div></div></div>
+            <div class="col-sm-6"><div class="card h-100"><div class="card-body"><div class="fw-bold">Inspection</div><div class="display-6 price">$99</div><div class="text-secondary">20‑point checklist</div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-5 border-top border-primary-subtle">
+    <div class="container">
+      <h3 class="fw-bold mb-3">How it Works</h3>
+      <div class="row g-3">
+        <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="chip"><i class="fa-solid fa-car-burst"></i> Seller</div><p class="mb-0 mt-2 text-secondary">Seller submits car → optional pickup.</p></div></div></div>
+        <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="chip"><i class="fa-solid fa-clipboard-check"></i> Inspect</div><p class="mb-0 mt-2 text-secondary">20‑point check; post listing.</p></div></div></div>
+        <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="chip"><i class="fa-solid fa-hand-holding-dollar"></i> Bundle</div><p class="mb-0 mt-2 text-secondary">Buyer picks services: title, tow, warranty, finance.</p></div></div></div>
+        <div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="chip"><i class="fa-solid fa-key"></i> Drive</div><p class="mb-0 mt-2 text-secondary">We process paperwork & delivery.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <div class="modal fade" id="addCarModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header"><h5 class="modal-title">Sell a Honker</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <p class="text-secondary">Fill out the form below to submit your car. We’ll review and email an offer.</p>
+          <form id="sellerFormModal" class="row g-3">
+            <div class="col-md-4"><label class="form-label">Year</label><input type="number" class="form-control" id="mYear" min="1988" max="2025" required></div>
+            <div class="col-md-4"><label class="form-label">Make</label><input class="form-control" id="mMake" required></div>
+            <div class="col-md-4"><label class="form-label">Model</label><input class="form-control" id="mModel" required></div>
+            <div class="col-md-6"><label class="form-label">Condition</label><select class="form-select" id="mCond"><option>Runs & Drives (rough)</option><option>Starts / Not Roadworthy</option><option>Non‑Runner</option><option>Parts / Scrap</option></select></div>
+            <div class="col-md-6"><label class="form-label">Asking Price ($)</label><input type="number" class="form-control" id="mAsk" min="0" step="50"></div>
+            <div class="col-12"><label class="form-label">Pickup Needed?</label> <input class="form-check-input ms-1" id="mTow" type="checkbox"></div>
+          </form>
+        </div>
+        <div class="modal-footer"><button class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary" id="saveCarBtn"><i class="fa-solid fa-floppy-disk me-1"></i> Submit</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="signUpBuyer" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header"><h5 class="modal-title">Buyer Sign‑Up</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <form id="buyerFormModal" class="row g-3">
+            <div class="col-12"><label class="form-label">Name</label><input class="form-control" id="bmName" required></div>
+            <div class="col-12"><label class="form-label">Email</label><input type="email" class="form-control" id="bmEmail" required></div>
+            <div class="col-6"><label class="form-label">Budget ($)</label><input type="number" class="form-control" id="bmBudget" value="2000" min="300"></div>
+            <div class="col-6"><label class="form-label">Financing?</label><select class="form-select" id="bmFin"><option>Yes</option><option>No</option></select></div>
+          </form>
+        </div>
+        <div class="modal-footer"><button class="btn btn-outline-light" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" id="saveBuyerBtn">Join</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-5 border-top border-primary-subtle">
+    <div class="container d-flex flex-wrap gap-3 align-items-center justify-content-between">
+      <div class="text-secondary small">© <span id="year"></span> CheapCarHub • Services, not the metal.</div>
+      <div class="d-flex gap-2">
+        <span class="badge badge-soft">Title</span>
+        <span class="badge badge-soft">Tow</span>
+        <span class="badge badge-soft">Warranty</span>
+        <span class="badge badge-soft">Finance</span>
+        <span class="badge badge-soft">Insurance</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ——— Simple state (localStorage) ———
+    const LS_KEYS = { CARS:'cch.cars', BUYERS:'cch.buyers' };
+    const APR_DEFAULT = 0.24; // 24% illustrative APR
+
+    function getLS(key, fallback){ try{ return JSON.parse(localStorage.getItem(key)) ?? fallback } catch{ return fallback } }
+    function setLS(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+    // Seed a few demo cars on first run
+    function seedIfEmpty(){
+      if(!getLS(LS_KEYS.CARS, []).length){
+        const demo=[
+          {id:cid(), year:2008, make:'Ford', model:'Focus', price:1400, cond:'Runs & Drives (rough)', miles:189000, img:'https://picsum.photos/seed/focus/640/360'},
+          {id:cid(), year:2006, make:'Toyota', model:'Corolla', price:2200, cond:'Starts / Not Roadworthy', miles:215000, img:'https://picsum.photos/seed/corolla/640/360'},
+          {id:cid(), year:2009, make:'Chevy', model:'HHR', price:1200, cond:'Non‑Runner', miles:201000, img:'https://picsum.photos/seed/hhr/640/360'},
+          {id:cid(), year:2004, make:'Honda', model:'Civic', price:2500, cond:'Runs & Drives (rough)', miles:235000, img:'https://picsum.photos/seed/civic/640/360'}
+        ];
+        setLS(LS_KEYS.CARS, demo);
+      }
+    }
+
+    function cid(){ return 'id_'+Math.random().toString(36).slice(2,9); }
+
+    // ——— Rendering ———
+    const cardsEl = document.getElementById('cards');
+    function renderCars(max){
+      const cars = getLS(LS_KEYS.CARS, []);
+      const filtered = max? cars.filter(c=>c.price<=Number(max)) : cars;
+      cardsEl.innerHTML = filtered.map(c=>cardHTML(c)).join('') || emptyHTML();
+    }
+
+    function cardHTML(c){
+      const title = `${c.year} ${c.make} ${c.model}`;
+      return `
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 rounded-2xl shadow-soft">
+          <img src="${c.img}" class="card-img-top" alt="${title}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">${title}</h5>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <span class="chip"><i class="fa-solid fa-gauge"></i> ${c.miles.toLocaleString()} mi</span>
+              <span class="chip"><i class="fa-solid fa-stethoscope"></i> ${c.cond}</span>
+            </div>
+            <div class="h4 mb-3">$${c.price.toLocaleString()}</div>
+            <div class="mt-auto d-grid gap-2">
+              <button class="btn btn-primary" onclick='openBundle(${JSON.stringify(c)})'><i class="fa-solid fa-cart-plus me-1"></i> Bundle & Reserve</button>
+            </div>
+          </div>
+        </div>
+      </div>`
+    }
+
+    function emptyHTML(){
+      return `<div class="col-12 text-center text-secondary py-5">No cars yet. Be the first seller — click <b>Sell a Honker</b> above.</div>`
+    }
+
+    // ——— Filters ———
+    document.querySelectorAll('.filter-pill').forEach(p=>{
+      p.addEventListener('click', ()=>{
+        const max = p.getAttribute('data-max');
+        document.getElementById('filterMax').value = max;
+        renderCars(max);
+      });
+    });
+    document.getElementById('filterMax').addEventListener('input', (e)=> renderCars(e.target.value || null));
+
+    // ——— Buyer signup ———
+    document.getElementById('buyerForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const rec={ id:cid(), name: bName.value.trim(), email:bEmail.value.trim(), budget:Number(bBudget.value||0), need:bNeed.value, financing:bFin.value };
+      const buyers=getLS(LS_KEYS.BUYERS, []); buyers.push(rec); setLS(LS_KEYS.BUYERS, buyers);
+      e.target.reset();
+      alert('Thanks! You\'re on the list. We\'ll notify you when a match appears.');
+    });
+    document.getElementById('saveBuyerBtn').addEventListener('click', ()=>{
+      const rec={ id:cid(), name: bmName.value.trim(), email:bmEmail.value.trim(), budget:Number(bmBudget.value||0), financing:bmFin.value };
+      const buyers=getLS(LS_KEYS.BUYERS, []); buyers.push(rec); setLS(LS_KEYS.BUYERS, buyers);
+      bmName.value=bmEmail.value='';
+      const modalEl=document.getElementById('signUpBuyer');
+      bootstrap.Modal.getInstance(modalEl).hide();
+      alert('Welcome aboard!');
+    });
+
+    // ——— Seller submit ———
+    document.getElementById('sellerForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      addCar({year:Number(sYear.value), make:sMake.value.trim(), model:sModel.value.trim(), price:Number(sAsk.value||0)||500, cond:sCond.value, miles: Math.floor(170000+Math.random()*70000), img:`https://picsum.photos/seed/${encodeURIComponent(sMake.value+sModel.value)}/640/360`});
+      e.target.reset();
+      alert('Submitted! We\'ll review and email you an offer.');
+    });
+    document.getElementById('saveCarBtn').addEventListener('click', ()=>{
+      addCar({year:Number(mYear.value), make:mMake.value.trim(), model:mModel.value.trim(), price:Number(mAsk.value||0)||500, cond:mCond.value, miles: Math.floor(170000+Math.random()*70000), img:`https://picsum.photos/seed/${encodeURIComponent(mMake.value+mModel.value)}/640/360`});
+      const modalEl=document.getElementById('addCarModal');
+      bootstrap.Modal.getInstance(modalEl).hide();
+      mYear.value=mMake.value=mModel.value=mAsk.value='';
+      alert('Thanks! Your car is in review.');
+    });
+
+    function addCar(c){ const cars=getLS(LS_KEYS.CARS, []); c.id=cid(); cars.push(c); setLS(LS_KEYS.CARS,cars); renderCars(document.getElementById('filterMax').value||null); }
+
+    // ——— Calculator ———
+    function calc(){
+      const price=Number(cPrice.value||0);
+      const down=Number(cDown.value||0);
+      const term=Math.max(1, Number(cTerm.value||1));
+      let upfront = down + (svcTitle.checked?199:0) + (svcTow.checked?149:0) + (svcWarranty.checked?199:0) + (svcInsurance.checked?99:0);
+      const financed = Math.max(0, price - down);
+      const r = APR_DEFAULT/12; // simple APR estimate
+      const monthly = r>0 ? (financed*r)/(1-Math.pow(1+r,-term)) : financed/term;
+      outUpfront.textContent = `$${upfront.toFixed(0)}`;
+      outFinance.textContent = `$${financed.toFixed(0)}`;
+      outMonthly.textContent = `$${monthly.toFixed(0)}`;
+    }
+    document.getElementById('btnCalc').addEventListener('click', calc);
+    ['cPrice','cDown','cTerm','svcTitle','svcTow','svcWarranty','svcInsurance'].forEach(id=> document.getElementById(id).addEventListener('input', calc));
+
+    // ——— Bundle flow ———
+    function openBundle(car){
+      // Prefill calculator with selected car price
+      document.getElementById('cPrice').value = car.price;
+      document.getElementById('cDown').value = Math.min(500, Math.floor(car.price*0.3));
+      document.getElementById('filterMax').scrollIntoView({behavior:'smooth'});
+      calc();
+    }
+    window.openBundle = openBundle;
+
+    // ——— Init ———
+    (function init(){
+      seedIfEmpty();
+      renderCars();
+      calc();
+      document.getElementById('year').textContent = new Date().getFullYear();
+      if(location.hash==="#admin"){ console.log('Buyers', getLS(LS_KEYS.BUYERS, [])); console.log('Cars', getLS(LS_KEYS.CARS, [])); }
+    })();
+  </script>
+</body>
+</html>
